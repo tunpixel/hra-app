@@ -11,8 +11,9 @@ require('angular-aria');
 require('angular-loading-bar');
 
 var hraApp = angular.module('hraApp', [
+  // 'ngSanitize',
   'ngResource',
-  // 'ngAnimate',
+  'ngAnimate',
   'ngTouch',
   'ngAria',
   'angular-loading-bar'

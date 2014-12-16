@@ -28,7 +28,7 @@
           <div class="panel-heading">Users List</div>
           <div class="panel-body">
 
-            <ng-include src="'modules/users/views/users-list.html'" ng-init="pageSize = 10; page = 1;"></ng-include>
+            <ng-include src="'modules/users/views/users-list.html'" ng-init="_pageSize = 10; _page = 1;"></ng-include>
 
           </div>
         </div>
@@ -38,7 +38,7 @@
           <div class="panel-heading">User Record</div>
           <div class="panel-body">
 
-            <ng-include ng-if="main.user" src="'modules/users/views/user-view.html'"></ng-include>
+            <ng-include ng-if="main.user" src="main.userView"></ng-include>
 
             <div ng-if="!main.user" class="text-center">Select a user to view!</div>
 
@@ -50,7 +50,7 @@
   </div>
 
   <!-- <script src="/scripts/main.bundle.js"></script> -->
-  <script src="/api/data.js"></script>
+  <!-- <script src="/api/data.js"></script> -->
   <script src="/modules/users/scripts/users.bundle.js"></script>
 
 </body>

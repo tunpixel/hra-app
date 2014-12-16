@@ -1,45 +1,15 @@
 
-  <table class="table">
-    <tr>
-      <th>#</th>
-      <th ng-click="sortReverse = (sort == 'firstname') ?!sortReverse : false; sort = 'firstname';">
-        Firstname
-        <span ng-show="sort == 'firstname' && !sortReverse" class="glyphicon glyphicon-chevron-down"></span>
-        <span ng-show="sort == 'firstname' && sortReverse" class="glyphicon glyphicon-chevron-up"></span>
-      </th>
-      <th ng-click="sortReverse = (sort == 'lastname') ?!sortReverse : false; sort = 'lastname';">
-        Lastname
-        <span ng-show="sort == 'lastname' && !sortReverse" class="glyphicon glyphicon-chevron-down"></span>
-        <span ng-show="sort == 'lastname' && sortReverse" class="glyphicon glyphicon-chevron-up"></span>
-      </th>
-      <th ng-click="sortReverse = (sort == 'role') ?!sortReverse : false; sort = 'role';">
-        Role
-        <span ng-show="sort == 'role' && !sortReverse" class="glyphicon glyphicon-chevron-down"></span>
-        <span ng-show="sort == 'role' && sortReverse" class="glyphicon glyphicon-chevron-up"></span>
-      </th>
-    </tr>
-    <tr ng-repeat="user in (filteredUsers = (main.users|filter:filterQuery))|orderBy:sort:sortReverse|paginateTo:pageSize:page as usersPage" ng-click="main.select(user)" ng-class="{'active': user.id == main.user.id}">
-      <td>{{(page-1)*pageSize + $index + 1}}</td>
-      <td>{{user.firstname}}</td>
-      <td>{{user.lastname}}</td>
-      <td>{{user.role|uppercase}}</td>
-    </tr>
-  </table>
-
-  <p ng-if="usersPage.length == 0" class="text-center text-warning">
-    No data found!
-  </p>
-
-  <ul class="pager">
-    <li class="previous"><a ng-click="page = page > 1 ? page-1 : 1;"><span aria-hidden="true">&larr;</span> Previous</a></li>
-    <li>{{page}} / {{filteredUsers.length / pageSize}} / {{main.users.length / pageSize}}</li>
-    <li class="next"><a ng-click="page = page < (main.users.length / pageSize) ? page+1 : page;">Next <span aria-hidden="true">&rarr;</span></a></li>
-  </ul>
-
   <form class="form-inline" role="form">
+    <button type="button" class="btn btn-default" ng-click="main.load()">Load More</button>
+    <button type="button" class="btn btn-default" ng-click="main.reset()">Reset</button>
+    <button type="button" class="btn btn-default" ng-click="main.reset(); main.load();">Refresh</button>
+    <button type="button" class="btn btn-default" ng-click="main.goAdd()">Add</button>
+  </form>
+
+  <form ng-if="main.users" class="form-inline" role="form">
 
     <div class="form-group">
-      <select class="form-control" ng-model="sort">
+      <select class="form-control" ng-model="main.sort">
         <option value="" selected> - Sort- </option>
         <option value="firstname">Firstname</option>
         <option value="lastname">Lastname</option>
@@ -48,34 +18,72 @@
     </div>
     <div class="checkbox">
        <label>
-         <input type="checkbox" ng-model="sortReverse"> Reverse
+         <input type="checkbox" ng-model="main.sortReverse"> Reverse
        </label>
     </div>
 
   </form>
 
-  <form class="form-inline" role="form">
+  <form ng-if="main.users" class="form-inline" role="form">
 
-    <!-- <div class="form-group" ng-if="!filterQuery.firstname && !filterQuery.lastname && !filterQuery.role">
-      <input type="text" class="form-control" placeholder="Filter" ng-model="filterQuery">
-    </div> -->
+    <div class="form-group" i-ng-if="!main.filterQuery.firstname && !main.filterQuery.lastname && !main.filterQuery.role">
+      <input type="text" class="form-control" placeholder="Filter" ng-model="main.filterQuery">
+    </div>
+
+  </form>
+
+  <!-- <form ng-if="main.users" class="form-inline" role="form">
+
     <div class="form-group">
-      <input type="text" class="form-control" placeholder="Firstname" ng-model="filterQuery.firstname">
+      <input type="text" class="form-control" placeholder="Firstname" ng-model="main.filterQuery.firstname">
     </div>
     <div class="form-group">
-      <input type="text" class="form-control" placeholder="Lastname" ng-model="filterQuery.lastname">
+      <input type="text" class="form-control" placeholder="Lastname" ng-model="main.filterQuery.lastname">
     </div>
     <div class="radio">
       <label class="radio-inline">
-        <input type="radio" name="filterRoleInput" ng-model="filterQuery.role" value="manager"> MANAGER
+        <input type="radio" name="filterRoleInput" ng-model="main.filterQuery.role" value="manager"> MANAGER
       </label>
       <label class="radio-inline">
-        <input type="radio" name="filterRoleInput" ng-model="filterQuery.role"  value="engineer"> ENGINEER
+        <input type="radio" name="filterRoleInput" ng-model="main.filterQuery.role"  value="engineer"> ENGINEER
       </label>
     </div>
-  </form>
 
+  </form> -->
 
-  <form class="form-inline" role="form">
-    <button type="button" class="btn btn-default">Add</button>
-  </form>
+  <table class="table" ng-if="main.users">
+    <tr>
+      <th>#</th>
+      <th ng-click="main.sortReverse = (main.sort == 'firstname') ?!main.sortReverse : false; main.sort = 'firstname';">
+        Firstname
+        <span ng-show="main.sort == 'firstname' && !main.sortReverse" class="glyphicon glyphicon-chevron-down"></span>
+        <span ng-show="main.sort == 'firstname' && main.sortReverse" class="glyphicon glyphicon-chevron-up"></span>
+      </th>
+      <th ng-click="main.sortReverse = (main.sort == 'lastname') ?!main.sortReverse : false; main.sort = 'lastname';">
+        Lastname
+        <span ng-show="main.sort == 'lastname' && !main.sortReverse" class="glyphicon glyphicon-chevron-down"></span>
+        <span ng-show="main.sort == 'lastname' && main.sortReverse" class="glyphicon glyphicon-chevron-up"></span>
+      </th>
+      <th ng-click="main.sortReverse = (main.sort == 'role') ?!main.sortReverse : false; main.sort = 'role';">
+        Role
+        <span ng-show="main.sort == 'role' && !main.sortReverse" class="glyphicon glyphicon-chevron-down"></span>
+        <span ng-show="main.sort == 'role' && main.sortReverse" class="glyphicon glyphicon-chevron-up"></span>
+      </th>
+    </tr>
+    <tr ng-repeat="user in (main.usersPage = (main.filteredUsers = (main.users|filter:main.filterQuery))|orderBy:main.sort:main.sortReverse|paginateTo:_pageSize:_page)" ng-click="main.select(user)" ng-class="{'active': user.id == main.user.id}">
+      <td>{{(_page-1)*_pageSize + $index + 1}}</td>
+      <td>{{user.firstname}}</td>
+      <td>{{user.lastname}}</td>
+      <td>{{user.role|uppercase}}</td>
+    </tr>
+  </table>
+
+  <p ng-if="main.users && main.usersPage.length == 0" class="text-center text-warning">
+    No data found!
+  </p>
+
+  <ul class="pager">
+    <li class="previous"><a ng-click="_page = _page > 1 ? _page-1 : 1;"><span aria-hidden="true">&larr;</span> Previous</a></li>
+    <li>{{_page}} / {{main.filteredUsers.length / _pageSize | number:0}} / {{main.users.length / _pageSize}}</li>
+    <li class="next"><a ng-click="_page = _page < (main.users.length / _pageSize) ? _page+1 : _page;">Next <span aria-hidden="true">&rarr;</span></a></li>
+  </ul>

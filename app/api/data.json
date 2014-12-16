@@ -1,6 +1,6 @@
 {
   "success": true,
-  "data": [{
+  "users": [{
     "id": "418ED099-38FE-A167-58F8-AC2F2259A4CC",
     "firstname": "Brendan",
     "lastname": "Nieves",
