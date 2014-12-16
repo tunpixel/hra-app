@@ -65,11 +65,11 @@ var ngAnnotate = require('gulp-ng-annotate');
 var uglify = require('gulp-uglify');
 
 
-gulp.task('default', ['common', 'mdl']);
+gulp.task('default', ['common', 'users']);
 
-gulp.task('styles', ['common-styles', 'mdl-styles']);
+gulp.task('styles', ['common-styles', 'users-styles']);
 
-gulp.task('scripts', ['common-scripts', 'mdl-scripts']);
+gulp.task('scripts', ['common-scripts', 'users-scripts']);
 
 
 gulp.task('common', ['common-styles', 'common-scripts']);
@@ -133,12 +133,21 @@ gulp.task('common-scripts', function () {
 
 });
 
+gulp.task('users', ['users-styles', 'users-scripts']);
 
-gulp.task('mdl', ['mdl-styles', 'mdl-scripts']);
-
-gulp.task('mdl-styles', [
-  'mdl-main-styles',
+gulp.task('users-styles', [
+  'users-main-styles',
 ]);
+
+gulp.task('users-main-styles', styleTaskFactory('./app/modules/users/styles', 'users', 'users-main-styles'));
+
+gulp.task('users-scripts', [
+  'users-main-scripts'
+]);
+
+gulp.task('users-main-scripts', scriptTaskFactory('./app/modules/users/scripts', 'users'));
+
+
 
 /**
  * DIR/FILENAME.scss --> FILENAME.css, FILENAME.bundle.min.css
@@ -168,12 +177,6 @@ function styleTaskFactory(DIR, FILENAME, TASKNAME) {
 
   };
 }
-
-gulp.task('mdl-main-styles', styleTaskFactory('./app/modules/mdl/styles', 'mdl', 'mdl-main-styles'));
-
-gulp.task('mdl-scripts', [
-  'mdl-main-scripts'
-]);
 
 /**
  * DIR/FILENAME.js --> FILENAME.bundle.js, FILENAME.bundle.min.js
@@ -242,5 +245,3 @@ function scriptTaskFactory(DIR, FILENAME) {
 
   };
 }
-
-gulp.task('mdl-main-scripts', scriptTaskFactory('./app/modules/mdl/scripts', 'mdl'));
