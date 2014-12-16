@@ -1,0 +1,81 @@
+
+  <table class="table">
+    <tr>
+      <th>#</th>
+      <th ng-click="sortReverse = (sort == 'firstname') ?!sortReverse : false; sort = 'firstname';">
+        Firstname
+        <span ng-show="sort == 'firstname' && !sortReverse" class="glyphicon glyphicon-chevron-down"></span>
+        <span ng-show="sort == 'firstname' && sortReverse" class="glyphicon glyphicon-chevron-up"></span>
+      </th>
+      <th ng-click="sortReverse = (sort == 'lastname') ?!sortReverse : false; sort = 'lastname';">
+        Lastname
+        <span ng-show="sort == 'lastname' && !sortReverse" class="glyphicon glyphicon-chevron-down"></span>
+        <span ng-show="sort == 'lastname' && sortReverse" class="glyphicon glyphicon-chevron-up"></span>
+      </th>
+      <th ng-click="sortReverse = (sort == 'role') ?!sortReverse : false; sort = 'role';">
+        Role
+        <span ng-show="sort == 'role' && !sortReverse" class="glyphicon glyphicon-chevron-down"></span>
+        <span ng-show="sort == 'role' && sortReverse" class="glyphicon glyphicon-chevron-up"></span>
+      </th>
+    </tr>
+    <tr ng-repeat="user in (filteredUsers = (main.users|filter:filterQuery))|orderBy:sort:sortReverse|paginateTo:pageSize:page as usersPage" ng-click="main.select(user)" ng-class="{'active': user.id == main.user.id}">
+      <td>{{(page-1)*pageSize + $index + 1}}</td>
+      <td>{{user.firstname}}</td>
+      <td>{{user.lastname}}</td>
+      <td>{{user.role|uppercase}}</td>
+    </tr>
+  </table>
+
+  <p ng-if="usersPage.length == 0" class="text-center text-warning">
+    No data found!
+  </p>
+
+  <ul class="pager">
+    <li class="previous"><a ng-click="page = page > 1 ? page-1 : 1;"><span aria-hidden="true">&larr;</span> Previous</a></li>
+    <li>{{page}} / {{filteredUsers.length / pageSize}} / {{main.users.length / pageSize}}</li>
+    <li class="next"><a ng-click="page = page < (main.users.length / pageSize) ? page+1 : page;">Next <span aria-hidden="true">&rarr;</span></a></li>
+  </ul>
+
+  <form class="form-inline" role="form">
+
+    <div class="form-group">
+      <select class="form-control" ng-model="sort">
+        <option value="" selected> - Sort- </option>
+        <option value="firstname">Firstname</option>
+        <option value="lastname">Lastname</option>
+        <option value="role">Role</option>
+      </select>
+    </div>
+    <div class="checkbox">
+       <label>
+         <input type="checkbox" ng-model="sortReverse"> Reverse
+       </label>
+    </div>
+
+  </form>
+
+  <form class="form-inline" role="form">
+
+    <!-- <div class="form-group" ng-if="!filterQuery.firstname && !filterQuery.lastname && !filterQuery.role">
+      <input type="text" class="form-control" placeholder="Filter" ng-model="filterQuery">
+    </div> -->
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Firstname" ng-model="filterQuery.firstname">
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Lastname" ng-model="filterQuery.lastname">
+    </div>
+    <div class="radio">
+      <label class="radio-inline">
+        <input type="radio" name="filterRoleInput" ng-model="filterQuery.role" value="manager"> MANAGER
+      </label>
+      <label class="radio-inline">
+        <input type="radio" name="filterRoleInput" ng-model="filterQuery.role"  value="engineer"> ENGINEER
+      </label>
+    </div>
+  </form>
+
+
+  <form class="form-inline" role="form">
+    <button type="button" class="btn btn-default">Add</button>
+  </form>

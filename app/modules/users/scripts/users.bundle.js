@@ -3,11 +3,24 @@
 
 var hraApp = require('./../../common/app');
 
-hraApp.controller('MainController', function MainController() {
-  this.message = "Hello World!";
-});
+require('./../../common/paginateTo-filter')(hraApp);
 
-},{"./../../common/app":9}],2:[function(require,module,exports){
+
+hraApp.controller('MainController', MainController);
+
+function MainController() {
+
+  this.users = data;
+
+  this.user = null;
+
+}
+
+MainController.prototype.select = function (user) {
+  this.user = user;
+};
+
+},{"./../../common/app":9,"./../../common/paginateTo-filter":10}],2:[function(require,module,exports){
 /**
  * @license AngularJS v1.3.7
  * (c) 2010-2014 Google, Inc. http://angularjs.org
@@ -30832,7 +30845,26 @@ var hraApp = angular.module('hraApp', [
 
 module.exports = hraApp;
 
-},{"./../../components/angular-animate/angular-animate.js":2,"./../../components/angular-aria/angular-aria.js":3,"./../../components/angular-loading-bar/build/loading-bar.js":4,"./../../components/angular-resource/angular-resource.js":5,"./../../components/angular-sanitize/angular-sanitize.js":6,"./../../components/angular-touch/angular-touch.js":7,"./../../components/angular/angular.js":8}]},{},[1])
+},{"./../../components/angular-animate/angular-animate.js":2,"./../../components/angular-aria/angular-aria.js":3,"./../../components/angular-loading-bar/build/loading-bar.js":4,"./../../components/angular-resource/angular-resource.js":5,"./../../components/angular-sanitize/angular-sanitize.js":6,"./../../components/angular-touch/angular-touch.js":7,"./../../components/angular/angular.js":8}],10:[function(require,module,exports){
+'use strict';
+
+module.exports = function (ngApp) {
+
+  /**
+   * Usage: {{ expresseion | paginateTo:pageSize:page }}
+   * param pageSize :
+   * param page : page index starting from 1
+   */
+  ngApp.filter('paginateTo', function () {
+    return function paginateTo_filter(inputList, pageSize, page) {
+      var index = (page - 1) * pageSize;
+      return inputList.slice(index, index + pageSize);
+    };
+  });
+
+};
+
+},{}]},{},[1])
 
 
 //# sourceMappingURL=users.bundle.js.map
