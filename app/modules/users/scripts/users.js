@@ -114,4 +114,15 @@ module.exports = function (ngApp) {
     this.userView = 'modules/users/views/user-view.html';
   };
 
+  UsersController.prototype.goDelete = function (user) {
+    var index = this.users.indexOf(user);
+    if (index > -1) {
+      if (confirm("Do you really want to delete " + user.firstname + " " + user.lastname + "?")) {
+        this.users.splice(index, 1);
+        this.user = null;
+      }
+    }
+  };
+
+
 };
