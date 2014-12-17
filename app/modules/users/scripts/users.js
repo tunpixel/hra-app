@@ -4,17 +4,21 @@ module.exports = function (ngApp) {
 
   require('./../../common/paginateTo-filter')(ngApp);
 
+  require('./users.entity')(ngApp);
+
   ngApp.controller('UsersController', UsersController);
 
-  function UsersController($http) {
+  function UsersController($scope, $http, UserEntity, ngTableParams, $filter) {
+
+    var scope = this;
 
     this.userView = 'modules/users/views/user-view.html';
 
     // list of users
-    this.users = null;
+    this.users = [];
 
     // selected user
-    this.user = null;
+    this.user = null;;
 
     // server-side page size
     this.pageSize = 100;
@@ -22,48 +26,85 @@ module.exports = function (ngApp) {
     // loading indicator
     this.loading = false;
 
-    var that = this;
 
     this.load = function () {
-      if (!that.loading) {
-        that.loading = true;
+      if (!scope.loading) {
+        scope.loading = true;
 
-        if (!that.users) {
-          that.page = 0;
+        if (!scope.users) {
+          scope.page = 0;
         }
 
         var params = {
-          page: that.page,
-          count: that.pageSize
+          page: scope.page,
+          count: scope.pageSize
         };
 
-        $http.get('/api/data.json', {
-          params: params
-        }).success(function (data) {
+        // $http.get('http://hra-backend.entrydns.org/users', {
+        //   params: params
+        // }).success(function (data) {
 
-          if (!that.users) {
-            that.users = [];
+        //   if (!scope.users) {
+        //     scope.users = [];
+        //   }
+
+        //   if (data.users && data.users.length) {
+        //     Array.prototype.push.apply(scope.users, data.users);
+        //     scope.page++;
+        //   }
+
+        //   if (data.users.length < scope.pageSize) {
+        //     scope.completed = true;
+        //   }
+
+        // }).error(function (err) {
+        //   console.error(err);
+        // }).finally(function () {
+        //   // $timeout(function () {
+        //   scope.loading = false;
+        //   // }, 500);
+        // });
+
+        UserEntity.query(function success(response) {
+
+          if (!scope.users) {
+            scope.users = [];
           }
 
-          if (data.users && data.users.length) {
-            Array.prototype.push.apply(that.users, data.users);
-            that.page++;
+          if (response && response.length) {
+            Array.prototype.push.apply(scope.users, response);
+            scope.page++;
+            $scope.$broadcast('ngTableAfterReloadData');
           }
 
-          if (data.users.length < that.pageSize) {
-            that.completed = true;
+          if (response.length < scope.pageSize) {
+            scope.completed = true;
           }
 
-        }).error(function (err) {
-          console.error(err);
-        }).finally(function () {
-          // $timeout(function () {
-          that.loading = false;
-          // }, 500);
+          scope.loading = false;
+        }, function failure(error) {
+          console.error(error);
         });
-
       }
     };
+
+    this.tableParams = new ngTableParams({
+      page: 1,
+      count: 10,
+    }, {
+      total: 0,
+      getData: function ($defer, params) {
+        var filteredData = params.filter() ?
+          $filter('filter')(scope.users, params.filter()) :
+          scope.users;
+        var orderedData = params.sorting() ?
+          $filter('orderBy')(filteredData, params.orderBy()) :
+          scope.users;
+
+        params.total(orderedData.length);
+        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+      }
+    });
 
     this.load();
 
