@@ -65,11 +65,11 @@ var ngAnnotate = require('gulp-ng-annotate');
 var uglify = require('gulp-uglify');
 
 
-gulp.task('default', ['common', 'users']);
+gulp.task('default', ['common', 'main']);
 
-gulp.task('styles', ['common-styles', 'users-styles']);
+gulp.task('styles', ['common-styles']);
 
-gulp.task('scripts', ['common-scripts', 'users-scripts']);
+gulp.task('scripts', ['common-scripts', 'main-scripts']);
 
 
 gulp.task('common', ['common-styles', 'common-scripts']);
@@ -133,21 +133,15 @@ gulp.task('common-scripts', function () {
 
 });
 
-gulp.task('users', ['users-styles', 'users-scripts']);
+gulp.task('main', ['main-scripts']);
 
-gulp.task('users-styles', [
-  'users-main-styles',
-]);
+// gulp.task('main-styles', [
+//   'main-main-styles',
+// ]);
 
-gulp.task('users-main-styles', styleTaskFactory('./app/modules/users/styles', 'users', 'users-main-styles'));
+// gulp.task('main-main-styles', styleTaskFactory('./app/modules/main/styles', 'main', 'main-main-styles'));
 
-gulp.task('users-scripts', [
-  'users-main-scripts'
-]);
-
-gulp.task('users-main-scripts', scriptTaskFactory('./app/modules/users/scripts', 'users'));
-
-
+gulp.task('main-scripts', scriptTaskFactory('./app/modules/main/scripts', 'main'));
 
 /**
  * DIR/FILENAME.scss --> FILENAME.css, FILENAME.bundle.min.css

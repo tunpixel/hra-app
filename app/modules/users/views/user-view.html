@@ -1,17 +1,17 @@
 
   <dl class="dl-horizontal">
     <dt>Id</dt>
-    <dd>{{main.user.id}}</dd>
+    <dd>{{usersCtrl.user.id}}</dd>
     <dt>Firstname</dt>
-    <dd>{{main.user.firstname}}</dd>
+    <dd>{{usersCtrl.user.firstname}}</dd>
     <dt>Lastname</dt>
-    <dd>{{main.user.lastname}}</dd>
+    <dd>{{usersCtrl.user.lastname}}</dd>
     <dt>Gender</dt>
-    <dd>{{main.user.gender|uppercase}}</dd>
+    <dd>{{usersCtrl.user.gender|uppercase}}</dd>
     <dt>Email</dt>
-    <dd>{{main.user.email}}</dd>
+    <dd>{{usersCtrl.user.email}}</dd>
     <dt>Role</dt>
-    <dd>{{main.user.role|uppercase}}</dd>
+    <dd>{{usersCtrl.user.role|uppercase}}</dd>
   </dl>
 
-  <button class="btn btn-default" ng-click="main.goEdit(main.user);">Edit</button>
+  <button class="btn btn-default" ng-click="usersCtrl.goEdit(usersCtrl.user);">Edit</button>

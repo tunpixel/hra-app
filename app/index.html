@@ -12,7 +12,7 @@
 
   <link rel="stylesheet" href="/styles/main.bundle.min.css">
 </head>
-<body ng-app="hraApp">
+<body ng-app="hraApp" >
 
   <div class="jumbotron">
     <div class="container">
@@ -20,7 +20,7 @@
     </div>
   </div>
 
-  <div class="container" ng-controller="MainController as main">
+  <div class="container" ng-controller="UsersController as usersCtrl">
 
     <div class="row">
       <div class="col-md-6">
@@ -38,9 +38,9 @@
           <div class="panel-heading">User Record</div>
           <div class="panel-body">
 
-            <ng-include ng-if="main.user" src="main.userView"></ng-include>
+            <ng-include ng-if="usersCtrl.user" src="usersCtrl.userView"></ng-include>
 
-            <div ng-if="!main.user" class="text-center">Select a user to view!</div>
+            <div ng-if="!usersCtrl.user" class="text-center">Select a user to view!</div>
 
           </div>
         </div>
@@ -49,9 +49,7 @@
 
   </div>
 
-  <!-- <script src="/scripts/main.bundle.js"></script> -->
-  <!-- <script src="/api/data.js"></script> -->
-  <script src="/modules/users/scripts/users.bundle.js"></script>
+  <script src="/modules/main/scripts/main.bundle.js"></script>
 
 </body>
 </html>
